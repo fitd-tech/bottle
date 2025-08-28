@@ -1,24 +1,39 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, StyleSheet } from 'react-native';
 
 import { ExternalLink } from './ExternalLink';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 
 import Colors from '@/constants/Colors';
+import { bottleBackendUrl } from '@/constants/General';
 
 export default function EditScreenInfo({ path }: { path: string }) {
+  const [test, setTest] = useState('');
+
+  async function handleClickTest() {
+    console.log('called handleClickTest');
+    try {
+      const response = await fetch(`${bottleBackendUrl}/`);
+      console.log('response', response);
+      if (!response.ok) {
+        const error = await response.text();
+        console.log('error in response', `${response.status}: ${error}`);
+        return;
+      }
+
+      const responseBody = await response.text();
+      console.log('responseBody', responseBody);
+      setTest(responseBody);
+    } catch (error) {
+      const _error = error as unknown as Error;
+      console.log('error in fetch', _error.message);
+    }
+  }
+
   return (
     <View>
       <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
-          Open up the code for this screen:
-        </Text>
-
         <View
           style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
           darkColor="rgba(255,255,255,0.05)"
@@ -32,21 +47,12 @@ export default function EditScreenInfo({ path }: { path: string }) {
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          Change any of the text, save the file, and your app will automatically
-          update.
+          {test}
         </Text>
       </View>
 
       <View style={styles.helpContainer}>
-        <ExternalLink
-          style={styles.helpLink}
-          href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
-        >
-          <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
-            Tap here if your app doesn't automatically update after making
-            changes
-          </Text>
-        </ExternalLink>
+        <Button onPress={handleClickTest} title="Test" />
       </View>
     </View>
   );
