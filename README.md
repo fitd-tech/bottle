@@ -1,13 +1,13 @@
-_BOTTLE_
+# BOTTLE
 
-**Back End**
+## Back End
 
 ```
 cd server
 tsx main.ts
 ```
 
-**Front End**
+## Front End
 
 To run in Simulator:
 
