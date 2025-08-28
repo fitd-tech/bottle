@@ -3,6 +3,8 @@ import { NodeHttpServer, NodeRuntime } from '@effect/platform-node';
 import { Layer } from 'effect';
 import { createServer } from 'node:http';
 
+// https://github.com/Effect-TS/effect/blob/main/packages/platform/README.md#http-server
+
 // Define the router with a single route for the root URL
 const router = HttpRouter.empty.pipe(
   HttpRouter.get('/', HttpServerResponse.text('Hello World'))
