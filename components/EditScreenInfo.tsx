@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, StyleSheet } from 'react-native';
 
 import { MonoText } from './StyledText';
@@ -40,21 +40,6 @@ function Shares() {
 }
 
 export default function EditScreenInfo({ path }: { path: string }) {
-  useEffect(() => {
-    async function getShares() {
-      const response = await fetch('http://localhost:8080/share');
-      console.log('response from useEffect', response);
-      if (!response.ok) {
-        const error = await response.text();
-        console.log('error from response in useEffect', error);
-      } else {
-        const shares = await response.json();
-        console.log('shares from useEffect', shares);
-      }
-    }
-    getShares();
-  }, []);
-
   return (
     <View>
       <View style={styles.getStartedContainer}>
