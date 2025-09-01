@@ -1,35 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Button, StyleSheet } from 'react-native';
 
-import { ExternalLink } from './ExternalLink';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 
-import Colors from '@/constants/Colors';
-import { bottleBackendUrl } from '@/constants/General';
+import { Result, useAtomValue } from '@effect-atom/atom-react';
+import { sharesAtom } from '@/client/atoms';
+
+function Shares() {
+  const shares = useAtomValue(sharesAtom);
+  console.log('shares from Shares', shares);
+  return Result.match(shares, {
+    onInitial: () => (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    ),
+    onFailure: (error) => {
+      console.log('error from Shares', error);
+      return (
+        <View>
+          <Text>There was an error.</Text>
+        </View>
+      );
+    },
+    onSuccess: (success) => {
+      console.log('success from Shares onSuccess', success);
+      return (
+        <View style={{ display: 'flex', flexDirection: 'column' }}>
+          {success.value.map((share) => (
+            <View key={share.id}>
+              <Text>{share.name}</Text>
+            </View>
+          ))}
+        </View>
+      );
+    },
+  });
+}
 
 export default function EditScreenInfo({ path }: { path: string }) {
-  const [test, setTest] = useState('');
-
-  async function handleClickTest() {
-    console.log('called handleClickTest');
-    try {
-      const response = await fetch(`${bottleBackendUrl}/`);
-      console.log('response', response);
+  useEffect(() => {
+    async function getShares() {
+      const response = await fetch('http://localhost:8080/share');
+      console.log('response from useEffect', response);
       if (!response.ok) {
         const error = await response.text();
-        console.log('error in response', `${response.status}: ${error}`);
-        return;
+        console.log('error from response in useEffect', error);
+      } else {
+        const shares = await response.json();
+        console.log('shares from useEffect', shares);
       }
-
-      const responseBody = await response.text();
-      console.log('responseBody', responseBody);
-      setTest(responseBody);
-    } catch (error) {
-      const _error = error as unknown as Error;
-      console.log('error in fetch', _error.message);
     }
-  }
+    getShares();
+  }, []);
 
   return (
     <View>
@@ -47,12 +71,19 @@ export default function EditScreenInfo({ path }: { path: string }) {
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          {test}
+          <Shares />
         </Text>
       </View>
 
       <View style={styles.helpContainer}>
-        <Button onPress={handleClickTest} title="Test" />
+        <Button
+          onPress={() => {
+            // console.log('share', share);
+            // getShare();
+            // setShare((previous) => String(Number(previous) + 1));
+          }}
+          title="Test"
+        />
       </View>
     </View>
   );

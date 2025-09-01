@@ -1,3 +1,4 @@
+import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {
   DarkTheme,
@@ -11,6 +12,7 @@ import { useEffect } from 'react';
 // import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { RegistryProvider } from '@effect-atom/atom-react';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,11 +55,17 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <React.StrictMode>
+      <RegistryProvider>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        </ThemeProvider>
+      </RegistryProvider>
+    </React.StrictMode>
   );
 }

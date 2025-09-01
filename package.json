@@ -39,12 +39,23 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@effect/language-service": "^0.36.0",
+    "@eslint/css": "^0.11.0",
+    "@eslint/js": "^9.34.0",
+    "@eslint/json": "^0.13.2",
+    "@eslint/markdown": "^7.2.0",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "^30.0.0",
     "@types/react": "~19.0.10",
-    "jest": "^29.2.1",
+    "eslint": "^9.34.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.3.0",
+    "jest": "^29.7.0",
     "jest-expo": "~53.0.10",
+    "jiti": "^2.5.1",
     "prettier": "3.6.2",
-    "react-test-renderer": "19.0.0",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.41.0"
   },
   "resolutions": {
     "react-native-worklets": "~0.4.1"
